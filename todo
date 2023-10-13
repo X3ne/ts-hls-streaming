@@ -1,0 +1,10 @@
+streaming:
+  bugs:
+    ☐ fix bug when first trancode/remux "file not found"
+    ✔ fix player at end of playlist when reload @done(23-10-13 20:59)
+    ☐ fix wrong duration
+  feat:
+    ☐ add support for multiple audio tracks
+    ☐ add support for multiple subtitles
+    ☐ add support for multiple quality
+    ☐ chunk ffmpeg transcoding

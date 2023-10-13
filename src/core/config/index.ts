@@ -3,6 +3,7 @@ import { z } from 'zod'
 import { Express } from 'express'
 
 import { LogsStorage } from '../services/logging'
+import { Transcoder } from '@services/transcoder'
 
 export enum Environment {
   Production = 'production',
@@ -92,5 +93,6 @@ export interface Globals {
   config: Config
   logger: Logger
   logStorage: LogsStorage
+  transcoder: Transcoder
   app: Express
 }

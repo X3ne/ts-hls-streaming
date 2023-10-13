@@ -5,23 +5,17 @@
 
 
 export interface paths {
-  '/logs': {
+  "/logs": {
     /** Retrieve latest server logs */
-    get: operations['getLogs'];
+    get: operations["getLogs"];
   };
-  '/default': {
-    /** get default route */
-    get: operations['getDefault'];
-    /** post default route */
-    post: operations['postDefault'];
-    /** delete default route */
-    delete: operations['deleteDefault'];
-    /** path default route */
-    patch: operations['patchDefault'];
+  "/stream": {
+    /** Start a new stream */
+    get: operations["getStream"];
   };
 }
 
-export type webhooks = Record<string, never>
+export type webhooks = Record<string, never>;
 
 export interface components {
   schemas: {
@@ -34,6 +28,9 @@ export interface components {
     MessageModel: {
       message: string;
     };
+    StreamModel: {
+      path: string;
+    };
     /** @description Server log entry */
     Log: {
       /** @description Log message */
@@ -41,13 +38,7 @@ export interface components {
       /** @description Log timestamp in seconds */
       time: number;
       /** @enum {string} */
-      level: 'debug' | 'info' | 'warn' | 'error';
-    };
-    DefaultPostModel: {
-      name: string;
-    };
-    DefaultPatchModel: {
-      name: string;
+      level: "debug" | "info" | "warn" | "error";
     };
   };
   responses: {
@@ -58,37 +49,37 @@ export interface components {
     /** @description Bad Request */
     400: {
       content: {
-        'application/json': components['schemas']['ApiErrorModel'];
+        "application/json": components["schemas"]["ApiErrorModel"];
       };
     };
     /** @description Unauthorized */
     401: {
       content: {
-        'application/json': components['schemas']['ApiErrorModel'];
+        "application/json": components["schemas"]["ApiErrorModel"];
       };
     };
     /** @description Forbidden */
     403: {
       content: {
-        'application/json': components['schemas']['ApiErrorModel'];
+        "application/json": components["schemas"]["ApiErrorModel"];
       };
     };
     /** @description Resource not found */
     404: {
       content: {
-        'application/json': components['schemas']['ApiErrorModel'];
+        "application/json": components["schemas"]["ApiErrorModel"];
       };
     };
     /** @description Conflict */
     409: {
       content: {
-        'application/json': components['schemas']['ApiErrorModel'];
+        "application/json": components["schemas"]["ApiErrorModel"];
       };
     };
     /** @description Server is busy */
     503: {
       content: {
-        'application/json': components['schemas']['ApiErrorModel'];
+        "application/json": components["schemas"]["ApiErrorModel"];
       };
     };
   };
@@ -98,9 +89,9 @@ export interface components {
   pathItems: never;
 }
 
-export type $defs = Record<string, never>
+export type $defs = Record<string, never>;
 
-export type external = Record<string, never>
+export type external = Record<string, never>;
 
 export interface operations {
 
@@ -110,151 +101,54 @@ export interface operations {
       /** @description OK */
       200: {
         content: {
-          'application/json': components['schemas']['Log'][];
+          "application/json": components["schemas"]["Log"][];
         };
       };
       /** @description Bad Request */
       400: {
         content: {
-          'application/json': components['schemas']['ApiErrorModel'];
+          "application/json": components["schemas"]["ApiErrorModel"];
         };
       };
       /** @description Unauthorized */
       401: {
         content: {
-          'application/json': components['schemas']['ApiErrorModel'];
+          "application/json": components["schemas"]["ApiErrorModel"];
         };
       };
       /** @description Forbidden */
       403: {
         content: {
-          'application/json': components['schemas']['ApiErrorModel'];
+          "application/json": components["schemas"]["ApiErrorModel"];
         };
       };
     };
   };
-  /** get default route */
-  getDefault: {
+  /** Start a new stream */
+  getStream: {
     responses: {
       /** @description OK */
       200: {
         content: {
-          'application/json': components['schemas']['MessageModel'];
+          "application/json": components["schemas"]["StreamModel"];
         };
       };
       /** @description Bad Request */
       400: {
         content: {
-          'application/json': components['schemas']['ApiErrorModel'];
+          "application/json": components["schemas"]["ApiErrorModel"];
         };
       };
       /** @description Unauthorized */
       401: {
         content: {
-          'application/json': components['schemas']['ApiErrorModel'];
+          "application/json": components["schemas"]["ApiErrorModel"];
         };
       };
       /** @description Forbidden */
       403: {
         content: {
-          'application/json': components['schemas']['ApiErrorModel'];
-        };
-      };
-    };
-  };
-  /** post default route */
-  postDefault: {
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['DefaultPostModel'];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          'application/json': components['schemas']['MessageModel'];
-        };
-      };
-      /** @description Bad Request */
-      400: {
-        content: {
-          'application/json': components['schemas']['ApiErrorModel'];
-        };
-      };
-      /** @description Unauthorized */
-      401: {
-        content: {
-          'application/json': components['schemas']['ApiErrorModel'];
-        };
-      };
-      /** @description Forbidden */
-      403: {
-        content: {
-          'application/json': components['schemas']['ApiErrorModel'];
-        };
-      };
-    };
-  };
-  /** delete default route */
-  deleteDefault: {
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          'application/json': components['schemas']['MessageModel'];
-        };
-      };
-      /** @description Bad Request */
-      400: {
-        content: {
-          'application/json': components['schemas']['ApiErrorModel'];
-        };
-      };
-      /** @description Unauthorized */
-      401: {
-        content: {
-          'application/json': components['schemas']['ApiErrorModel'];
-        };
-      };
-      /** @description Forbidden */
-      403: {
-        content: {
-          'application/json': components['schemas']['ApiErrorModel'];
-        };
-      };
-    };
-  };
-  /** path default route */
-  patchDefault: {
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['DefaultPatchModel'];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          'application/json': components['schemas']['MessageModel'];
-        };
-      };
-      /** @description Bad Request */
-      400: {
-        content: {
-          'application/json': components['schemas']['ApiErrorModel'];
-        };
-      };
-      /** @description Unauthorized */
-      401: {
-        content: {
-          'application/json': components['schemas']['ApiErrorModel'];
-        };
-      };
-      /** @description Forbidden */
-      403: {
-        content: {
-          'application/json': components['schemas']['ApiErrorModel'];
+          "application/json": components["schemas"]["ApiErrorModel"];
         };
       };
     };

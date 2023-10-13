@@ -40,12 +40,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiErrorModel'
       parameters: []
-  /default:
+  /stream:
     get:
-      operationId: getDefault
-      summary: get default route
+      operationId: getStream
+      summary: Start a new stream
       tags:
-        - default
+        - stream
       security:
         - apiKey: []
       responses:
@@ -54,118 +54,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MessageModel'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiErrorModel'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiErrorModel'
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiErrorModel'
-      parameters: []
-    post:
-      operationId: postDefault
-      summary: post default route
-      tags:
-        - default
-      security:
-        - apiKey: []
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/DefaultPostModel'
-        required: true
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MessageModel'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiErrorModel'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiErrorModel'
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiErrorModel'
-      parameters: []
-    patch:
-      operationId: patchDefault
-      summary: path default route
-      tags:
-        - default
-      security:
-        - apiKey: []
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/DefaultPatchModel'
-        required: true
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MessageModel'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiErrorModel'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiErrorModel'
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiErrorModel'
-      parameters: []
-    delete:
-      operationId: deleteDefault
-      summary: delete default route
-      tags:
-        - default
-      security:
-        - apiKey: []
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MessageModel'
+                $ref: '#/components/schemas/StreamModel'
         '400':
           description: Bad Request
           content:
@@ -208,6 +97,13 @@ components:
           type: string
       required:
         - message
+    StreamModel:
+      type: object
+      properties:
+        path:
+          type: string
+      required:
+        - path
     Log:
       type: object
       description: Server log entry
@@ -229,20 +125,6 @@ components:
         - message
         - time
         - level
-    DefaultPostModel:
-      type: object
-      properties:
-        name:
-          type: string
-      required:
-        - name
-    DefaultPatchModel:
-      type: object
-      properties:
-        name:
-          type: string
-      required:
-        - name
   responses:
     '204':
       description: Successful operation

@@ -6,6 +6,7 @@ import rateLimit from 'express-rate-limit'
 import bodyParser from 'body-parser'
 import compression from 'compression'
 import responsetime from 'response-time'
+import helmet from 'helmet'
 
 import * as dotenv from 'dotenv'
 import { expand } from 'dotenv-expand'
@@ -19,9 +20,11 @@ import { getApiRouter as getApiV1Router } from '@v1/routes'
 
 import 'express-async-errors'
 import { handleApiErrors } from '@helpers/errors'
+import { Transcoder } from '@services/transcoder'
 
 export interface AppOptions {
   config?: Partial<Config>
+  transcoder?: Transcoder
   logger?: Logger
 }
 
@@ -37,11 +40,14 @@ export function createApp(options?: AppOptions): Globals {
     ? options.logger
     : createLogger(config, logStorage)
 
+  const transcoder = new Transcoder()
+
   const app = express()
 
   app.use(responsetime())
 
   app.use(cors())
+  app.use(helmet())
 
   app.set('etag', false)
 
@@ -67,6 +73,7 @@ export function createApp(options?: AppOptions): Globals {
     '/api/v1',
     getApiV1Router({
       config,
+      transcoder,
       logger,
       logStorage,
       app,
@@ -75,11 +82,11 @@ export function createApp(options?: AppOptions): Globals {
 
   app.use(handleApiErrors(logger))
 
-  return { app, logger, config, logStorage }
+  return { app, logger, transcoder, config, logStorage }
 }
 
 export function createAndRunApp(): Globals {
-  const { app, config, logger, logStorage } = createApp()
+  const { app, config, logger, transcoder, logStorage } = createApp()
 
   const server = app.listen(config.port, config.host, () => {
     const accessHost =
@@ -115,5 +122,5 @@ export function createAndRunApp(): Globals {
   process.on('SIGTERM', shutdown)
   process.on('SIGINT', shutdown)
 
-  return { app, config, logger, logStorage }
+  return { app, config, logger, transcoder, logStorage }
 }

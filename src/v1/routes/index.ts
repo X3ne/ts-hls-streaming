@@ -5,8 +5,9 @@ import swaggerUi from 'swagger-ui-express'
 
 import { Globals } from '@config'
 import { logsRouter } from './logs'
-import { defaultRouter } from './default'
+import { streamRouter } from './stream'
 import { createRouter, openapi } from '@v1/services/openapi'
+import express from 'express'
 
 export function getApiRouter(globals: Globals): Router {
   const { config } = globals
@@ -23,6 +24,11 @@ export function getApiRouter(globals: Globals): Router {
   }
 
   app.get('/status', (_req, res) => res.send({ status: 'ok' }))
+
+  console.log('service streams from', config.transcoder.transcodePath)
+
+  app.use(express.static(config.transcoder.transcodePath))
+  app.use('/test', express.static('/home/arthur/dev/ts-torrents-api/videos'))
 
   app.use(
     middleware({
@@ -54,7 +60,7 @@ export function getApiRouter(globals: Globals): Router {
     }),
   )
 
-  app.use(createRouter([...logsRouter(globals), ...defaultRouter()]))
+  app.use(createRouter([...logsRouter(globals), ...streamRouter(globals)]))
 
   app.use('/?*', () => {
     throw new HttpError(HttpStatusCodes.NOT_FOUND)
