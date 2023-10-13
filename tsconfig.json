@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "target": "es2016",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "pretty": true,
+    "rootDir": "./src",
+    "baseUrl": "./src",
+    "resolveJsonModule": true,
+    "outDir": "./dist",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "typeRoots": ["./node_modules/@types", "./src/core/types"],
+    "paths": {
+      "@config": ["core/config/index.ts"],
+      "@helpers/*": ["core/helpers/*"],
+      "@services/*": ["core/services/*"],
+      "@db/*": ["core/database/*"],
+      "@core/*": ["core/*"],
+      "@v1/*": ["v1/*"],
+    }
+  },
+  "include": ["src/**/*", "swagger.ts"],
+  "exclude": ["node_modules"],
+  "ts-node": {
+    "require": ["tsconfig-paths/register"]
+  },
+}
