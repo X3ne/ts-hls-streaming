@@ -28,19 +28,9 @@ Just run
 npm run build
 ```
 
-## Add or edit routes
-
-Edit `docs/v1.yaml` and run
-
-```
-npm run openapiv1
-```
-
-to generate the files needed for api specification
-
 ## Docker
 
-# envs
+### envs
 
 ```
 HOST=server host
