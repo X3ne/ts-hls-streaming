@@ -4,6 +4,7 @@ import { Express } from 'express'
 
 import { LogsStorage } from '../services/logging'
 import { Transcoder } from '@services/transcoder'
+import { Regie } from '@services/regie'
 
 export enum Environment {
   Production = 'production',
@@ -94,5 +95,6 @@ export interface Globals {
   logger: Logger
   logStorage: LogsStorage
   transcoder: Transcoder
+  regie: Regie
   app: Express
 }

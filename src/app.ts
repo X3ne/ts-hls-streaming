@@ -7,6 +7,8 @@ import bodyParser from 'body-parser'
 import compression from 'compression'
 import responsetime from 'response-time'
 import helmet from 'helmet'
+import { Server } from 'socket.io'
+import http from 'http'
 
 import * as dotenv from 'dotenv'
 import { expand } from 'dotenv-expand'
@@ -21,12 +23,16 @@ import { getApiRouter as getApiV1Router } from '@v1/routes'
 import 'express-async-errors'
 import { handleApiErrors } from '@helpers/errors'
 import { Transcoder } from '@services/transcoder'
+import { Regie } from '@services/regie'
 
 export interface AppOptions {
   config?: Partial<Config>
   transcoder?: Transcoder
+  regie?: Regie
   logger?: Logger
 }
+
+let server: http.Server
 
 export function createApp(options?: AppOptions): Globals {
   const config = readConfig(options?.config)
@@ -43,6 +49,10 @@ export function createApp(options?: AppOptions): Globals {
   const transcoder = new Transcoder()
 
   const app = express()
+  server = http.createServer(app)
+
+  const ioServer = new Server(server)
+  const regie = new Regie(ioServer)
 
   app.use(responsetime())
 
@@ -74,6 +84,7 @@ export function createApp(options?: AppOptions): Globals {
     getApiV1Router({
       config,
       transcoder,
+      regie,
       logger,
       logStorage,
       app,
@@ -82,13 +93,13 @@ export function createApp(options?: AppOptions): Globals {
 
   app.use(handleApiErrors(logger))
 
-  return { app, logger, transcoder, config, logStorage }
+  return { app, logger, transcoder, regie, config, logStorage }
 }
 
 export function createAndRunApp(): Globals {
-  const { app, config, logger, transcoder, logStorage } = createApp()
+  const { app, config, logger, transcoder, regie, logStorage } = createApp()
 
-  const server = app.listen(config.port, config.host, () => {
+  server.listen(config.port, config.host, () => {
     const accessHost =
       config.host === ('0.0.0.0' || 'localhost') ? '127.0.0.1' : config.host
 
@@ -122,5 +133,5 @@ export function createAndRunApp(): Globals {
   process.on('SIGTERM', shutdown)
   process.on('SIGINT', shutdown)
 
-  return { app, config, logger, transcoder, logStorage }
+  return { app, config, logger, transcoder, regie, logStorage }
 }
