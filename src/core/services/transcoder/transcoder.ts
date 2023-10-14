@@ -3,7 +3,7 @@ import { Job } from './job'
 import fs from 'fs'
 
 export class Transcoder {
-  jobs: Job[] = []
+  private jobs: Job[] = []
 
   constructor() {
     console.log('transcoder started')
